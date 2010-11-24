@@ -228,8 +228,15 @@ RC2RES = $(RC2RES_C) -fo $@ $**
 
 !ifndef RECURSE
 
+REQUIRED_TOOLS= \
+	"$(SIGNTOOL)" "$(LIGHT_CMD)" "$(LIT_CMD)" "$(SED)"
+
+!ifdef BUILD_INSTALLERS
+REQUIRED_TOOLS=$(REQUIRED_TOOLS) "$(CANDLE_CMD)"
+!endif
+
 check-utils:
-	@for %%g in ( "$(SIGNTOOL)" "$(CANDLE_CMD)" "$(LIGHT_CMD)" "$(LIT_CMD)" "$(SED)") do @( \
+	@for %%g in ( $(REQUIRED_TOOLS) ) do @( \
 	for /f %%f in ( "%%g" ) do @( \
 		if exist %%f @( \
 			echo Found %%f \
